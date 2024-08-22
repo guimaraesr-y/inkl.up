@@ -22,10 +22,6 @@ export async function middleware(request: NextRequest) {
         serviceAccount: serverConfig.serviceAccount,
         
         handleValidToken: async ({ token, decodedToken }, headers) => {
-            if (isPublicPath(request.nextUrl.pathname, PUBLIC_PATHS)) {
-                return redirectToHome(request);
-            }
-
             return NextResponse.next({
                 request: {
                     headers
