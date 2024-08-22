@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { app } from "@/lib/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
+import { useUser } from "@/hooks/user/useUser";
+import User from "@/lib/user/User";
 
 export default function Login() {
+    const { getUser, createUser } = useUser();
     console.log(app.name)
     const auth = getAuth();
     auth.useDeviceLanguage();
@@ -28,6 +31,15 @@ export default function Login() {
         try {
             const result = await signInWithPopup(auth, provider);
             const idToken = await result.user.getIdToken();
+
+            if(!(await getUser(result.user.uid))) {
+                await createUser({
+                    id: result.user.uid, 
+                    name: result.user.displayName || 'Desconhecido', 
+                    email: result.user.email || 'Desconhecido',
+                    profilePicture: result.user.photoURL || undefined,
+                });
+            }
 
             await fetch("/api/login", {
                 headers: {
