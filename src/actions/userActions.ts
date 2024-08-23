@@ -1,7 +1,5 @@
 'use server';
 
-import { getAuth } from 'firebase/auth';
-import { app } from '@/lib/firebase';
 import { UserService } from '@/lib/user/UserService';
 import User from '@/lib/user/User';
 

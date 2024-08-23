@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { app } from "@/lib/firebase";
+import { app } from "@/lib/infra/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import { useUser } from "@/hooks/user/useUser";

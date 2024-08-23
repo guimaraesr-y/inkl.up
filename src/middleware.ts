@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authMiddleware, redirectToHome, redirectToLogin } from "next-firebase-auth-edge";
+import { authMiddleware, redirectToLogin } from "next-firebase-auth-edge";
 import { clientConfig, serverConfig } from "./config";
+import { isPublicPath, PUBLIC_PATHS } from "./lib/infra/publicPath";
 
-const PUBLIC_PATHS = ['/', '/register', '/login', '/**'];
-
-function isPublicPath(pathname: string, publicPaths: string[]): boolean {
-    return publicPaths.some((path) => {
-        const regex = new RegExp(`^${path.replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*')}$`);
-        return regex.test(pathname);
-    });
-}
 
 export async function middleware(request: NextRequest) {
     return authMiddleware(request, {

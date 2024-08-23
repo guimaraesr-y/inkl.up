@@ -1,4 +1,4 @@
-import FirestoreService from "@/lib/firestore";
+import FirestoreService from "@/lib/infra/firestore";
 import User from "./User";
 
 export class UserService {

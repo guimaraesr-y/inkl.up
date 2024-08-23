@@ -1,8 +1,15 @@
+'use client';
+
+import NavbarWrapper from "@/components/navigation/NavbarWrapper";
 
 // TODO: this is where user configures their links
 const Dashboard = () => {
     return (
-        <main>TODO</main>
+        <>
+            <NavbarWrapper>
+                <div>TODO</div>
+            </NavbarWrapper>
+        </>
     )
 }
 
