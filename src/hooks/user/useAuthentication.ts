@@ -4,26 +4,20 @@ import User from "@/lib/user/User";
 import { getTokens } from "next-firebase-auth-edge";
 import { clientConfig, serverConfig } from "@/config";
 import { cookies } from "next/headers";
+import { getAuthenticatedUser } from "@/actions/authenticationActions";
 
-export const useAuthentication = (id: string) => {
+export const useAuthentication = () => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLoading(true);
 
-        getTokens(cookies(), {
-            apiKey: clientConfig.apiKey,
-            cookieName: serverConfig.cookieName,
-            cookieSignatureKeys: serverConfig.cookieSignatureKeys,
-            serviceAccount: serverConfig.serviceAccount,
-        })
-            .then(async (tokens) => {
-                if (tokens) {
-                    setUser(await getUserById(tokens.decodedToken.uid));
-                }
+        getAuthenticatedUser()
+            .then(user => {
+                setUser(user);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error(error);
             })
             .finally(() => {
