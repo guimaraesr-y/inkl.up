@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 export default class FirestoreService {
     async getCollection(collectionName: string) {
@@ -20,6 +20,12 @@ export default class FirestoreService {
     async addDocument(collectionName: string, data: any) {
         const docRef = await addDoc(collection(db, collectionName), data);
         return docRef.id;
+    };
+
+    async setDocument(collectionName: string, id: string, data: any) {
+        const docRef = doc(db, collectionName, id);
+        await setDoc(docRef, data);
+        return docRef.id
     };
 
     async updateDocument(collectionName: string, id: string, data: any) {

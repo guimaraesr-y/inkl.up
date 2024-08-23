@@ -18,8 +18,8 @@ export class UserService {
         return await this.firestoreService.getDocument(this.collectionName, id) as User | null;
     }
 
-    public async createUser(user: Omit<User, 'id'>): Promise<string> {
-        return await this.firestoreService.addDocument(this.collectionName, user);
+    public async createUser(user: User): Promise<string> {
+        return await this.firestoreService.setDocument(this.collectionName, user.id, user);
     }
 
     public async updateUser(id: string, user: Partial<User>): Promise<void> {

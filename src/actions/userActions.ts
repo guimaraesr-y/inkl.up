@@ -14,7 +14,7 @@ export const getUserById = async (id: string) => {
     return await userService.getUserById(id);
 };
 
-export const createUser = async (user: Omit<User, 'id'>) => {
+export const createUser = async (user: User) => {
     const id = await userService.createUser(user);
     return id;
 };
