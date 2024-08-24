@@ -16,7 +16,7 @@ const NavbarWrapper = ({ children }: { children: React.ReactNode }) => {
                     <AppBar />
                 </nav>
 
-                <main className="flex-1 p-6 bg-gray-100 overflow-auto">
+                <main className="w-screen">
                     {children}
                 </main>
             </div>
