@@ -7,7 +7,7 @@ export default function AppBar() {
             <div className="flex justify-between items-center p-4">
                 <Link href="/dashboard/styles" className="flex flex-col items-center justify-center">
                     <FaBrush className="h-6 w-6 mb-1" />
-                    <span className="text-sm">Search</span>
+                    <span className="text-sm">Estilos</span>
                 </Link>
 
                 <Link href="/dashboard" className="flex flex-col items-center justify-center">
