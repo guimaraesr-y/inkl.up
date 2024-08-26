@@ -1,5 +1,6 @@
 import FirestoreService from "@/lib/infra/firestore";
 import User from "./User";
+import { CreateUserDto, UpdateUserDto } from "./interfaces";
 
 export class UserService {
 
@@ -18,12 +19,12 @@ export class UserService {
         return await this.firestoreService.getDocument(this.collectionName, id) as User | null;
     }
 
-    public async createUser(user: User): Promise<string> {
+    public async createUser(user: CreateUserDto): Promise<string> {
         return await this.firestoreService.setDocument(this.collectionName, user.id, user);
     }
 
-    public async updateUser(id: string, user: Partial<User>): Promise<void> {
-        await this.firestoreService.updateDocument(this.collectionName, id, user);
+    public async updateUser(user: UpdateUserDto): Promise<void> {
+        await this.firestoreService.updateDocument(this.collectionName, user.id, user);
     }
 
 }

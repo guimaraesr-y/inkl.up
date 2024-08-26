@@ -2,6 +2,7 @@
 import User from "@/lib/user/User";
 import * as userActions from "@/actions/userActions";
 import { useState } from "react";
+import { UpdateUserDto } from "@/lib/user/interfaces";
 
 export function useUser() {
     const [loading, setLoading] = useState(false);
@@ -37,12 +38,12 @@ export function useUser() {
         }
     };
 
-    const updateUser = async (userId: string, user: Partial<User>) => {
+    const updateUser = async (user: UpdateUserDto) => {
         setLoading(true);
         setError(null);
         
         try {
-            await userActions.updateUser(userId, user);
+            await userActions.updateUser(user);
             setLoading(false);
         } catch (e) {
             setError("Failed to update user");
