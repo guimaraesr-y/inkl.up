@@ -2,12 +2,13 @@
 import Link from "@/lib/link/Link";
 import * as linkAction from "@/actions/linkAction";
 import { useState, useCallback } from "react";
+import { CreateLinkDto, UpdateLinkDto } from "@/lib/link/interfaces";
 
 export function useLink() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createLink = useCallback(async (link: Link) => {
+    const createLink = useCallback(async (link: CreateLinkDto) => {
         setLoading(true);
         setError(null);
         
@@ -52,12 +53,12 @@ export function useLink() {
         }
     }, [setLoading, setError]);
 
-    const updateLink = useCallback(async (linkId: string, link: Partial<Link>) => {
+    const updateLink = useCallback(async (link: UpdateLinkDto) => {
         setLoading(true);
         setError(null);
         
         try {
-            await linkAction.updateLink(linkId, link);
+            await linkAction.updateLink(link);
             setLoading(false);
         } catch (e) {
             setError("Failed to update link");
@@ -66,10 +67,26 @@ export function useLink() {
         }
     }, [setLoading, setError]);
 
+    const deleteLink = useCallback(async (linkId: string) => {
+        setLoading(true);
+        setError(null);
+        
+        try {
+            await linkAction.deleteLink(linkId);
+            setLoading(false);
+        } catch (e) {
+            setError("Failed to delete link");
+            setLoading(false);
+            throw e;
+        }
+    }, [setLoading, setError]);
+
     return { 
         createLink, 
         getLinks, 
+        getLinkById,
         updateLink, 
+        deleteLink,
         loading, 
         error 
     };

@@ -1,4 +1,5 @@
 import FirestoreService from "../infra/firestore";
+import { CreateLinkDto, UpdateLinkDto } from "./interfaces";
 import Link from "./Link";
 
 export class LinkService {
@@ -18,7 +19,7 @@ export class LinkService {
         return await this.firestoreService.getDocument(this.collectionName, id) as Link | null;
     }
     
-    async createLink(link: Omit<Link, 'id'>) {
+    async createLink(link: CreateLinkDto) {
         const id = await this.firestoreService.addDocument(this.collectionName, link);
         
         return {
@@ -27,12 +28,16 @@ export class LinkService {
         } as Link;
     }
     
-    updateLink(id: string, link: Partial<Link>) {
+    updateLink(link: UpdateLinkDto) {
         if(!link.id) {
             throw new Error("Link id is required");
         }
 
-        return this.firestoreService.updateDocument(this.collectionName, id, link);
+        return this.firestoreService.updateDocument(this.collectionName, link.id, link);
+    }
+
+    deleteLink(id: string) {
+        return this.firestoreService.deleteDocument(this.collectionName, id);
     }
 
 }
