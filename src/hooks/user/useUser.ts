@@ -1,14 +1,14 @@
 // hooks/useUser.ts
 import User from "@/lib/user/User";
 import * as userActions from "@/actions/userActions";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UpdateUserDto } from "@/lib/user/interfaces";
 
 export function useUser() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createUser = async (user: User) => {
+    const createUser = useCallback(async (user: User) => {
         setLoading(true);
         setError(null);
         
@@ -21,9 +21,9 @@ export function useUser() {
             setLoading(false);
             throw e;
         }
-    };
+    }, [setLoading, setError]);
 
-    const getUser = async (userId: string): Promise<User | null> => {
+    const getUser = useCallback(async (userId: string): Promise<User | null> => {
         setLoading(true);
         setError(null);
         
@@ -36,9 +36,9 @@ export function useUser() {
             setLoading(false);
             return null;
         }
-    };
+    }, [setLoading, setError]);
 
-    const updateUser = async (user: UpdateUserDto) => {
+    const updateUser = useCallback(async (user: UpdateUserDto) => {
         setLoading(true);
         setError(null);
         
@@ -50,7 +50,7 @@ export function useUser() {
             setLoading(false);
             throw e;
         }
-    };
+    }, [setLoading, setError]);
 
     return { createUser, getUser, updateUser, loading, error };
 }
