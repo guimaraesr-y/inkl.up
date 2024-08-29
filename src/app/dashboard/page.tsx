@@ -34,16 +34,13 @@ const Dashboard = () => {
     const formFields: Field[] = [
         { id: 'title', label: 'Título', type: 'text', placeholder: 'Digite o título do link' },
         { id: 'url', label: 'URL', type: 'text', placeholder: 'https://www.exemplo.com' },
-        // TODO: implement image upload
+        { id: 'image', label: 'Imagem', type: 'file', placeholder: '' },
     ];
 
-    const handleCreateLink = async (data: any) => {
-        const link = await createLink({
-            userId: user?.id!, 
-            url: data.url, 
-            title: data.title,
-            imageUrl: data.imageUrl,
-        });
+    const handleCreateLink = async (data: FormData) => {
+        data.set('userId', user?.id!);
+
+        const link = await createLink(data);
 
         setLinks([...links, link]);
         setOpenCreateLink(false);

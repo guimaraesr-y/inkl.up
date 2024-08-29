@@ -5,7 +5,7 @@ export interface FormInputProps {
     id: string;
     type?: HTMLInputTypeAttribute;
     placeholder?: string;
-    value: string | boolean;
+    value: string | boolean | File;
     disabled?: boolean;
     onChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
     options?: { value: string; label: string }[];
@@ -49,6 +49,23 @@ const Input = ({ label, id, type = 'text', placeholder, value, disabled = false,
                         </option>
                     ))}
                 </select>
+            </div>
+        );
+    }
+
+    if (type === 'file') {
+        return (
+            <div className="mb-6">
+                <label htmlFor={id} className="block text-subtitle mb-2">
+                    {label}
+                </label>
+                <input
+                    id={id}
+                    type="file"
+                    onChange={onChange}
+                    disabled={disabled}
+                    className="w-full px-4 py-2 bg-back border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
             </div>
         );
     }

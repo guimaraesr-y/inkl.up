@@ -63,11 +63,18 @@ const UserLink = ({
 
     return (
         <>
-            <Link href={editMode ? "#" : href} className="group w-full flex flex-col items-center gap-2 px-2 py-4 border border-border rounded-lg hover:bg-primary">
+            <Link href={editMode ? "#" : href} className="group w-full flex flex-col items-center gap-2 p-4 border border-border rounded-lg hover:bg-primary">
                 {/* Image div */}
                 {imageUrl !== undefined && (
-                    <div className="">
-                        <Image src={imageUrl} alt={title} className="w-10 h-10 rounded-full" />
+                    <div className="w-full h-auto">
+                        <Image 
+                            src={imageUrl} 
+                            width={0} 
+                            height={0} 
+                            sizes="100vw" 
+                            alt={title} 
+                            className="w-full" 
+                        />
                     </div>
                 )}
 

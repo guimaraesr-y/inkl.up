@@ -2,18 +2,18 @@
 import Link from "@/lib/link/Link";
 import * as linkAction from "@/actions/linkAction";
 import { useState, useCallback } from "react";
-import { CreateLinkDto, UpdateLinkDto } from "@/lib/link/interfaces";
+import { UpdateLinkDto } from "@/lib/link/interfaces";
 
 export function useLink() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createLink = useCallback(async (link: CreateLinkDto) => {
+    const createLink = useCallback(async (formData: FormData) => {
         setLoading(true);
         setError(null);
         
         try {
-            const linkId = await linkAction.createLink(link);
+            const linkId = await linkAction.createLink(formData);
             setLoading(false);
             return linkId;
         } catch (e) {
