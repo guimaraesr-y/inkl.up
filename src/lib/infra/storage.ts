@@ -3,16 +3,15 @@ import { storage } from './firebase';
 
 export class FireStorageService {
 
-    private storageRef: StorageReference;
-
-    constructor() {
-        this.storageRef = ref(storage, '/uploads');
+    private getStorageRef(filename: string) {
+        return ref(storage, `/uploads/${filename}`);
     }
 
     public async uploadFile(file: File) {
         if (!file) return null;
 
-        const snapshot = await uploadBytes(this.storageRef, file);
+        const ref = this.getStorageRef(file.name);
+        const snapshot = await uploadBytes(ref, file);
         const downloadURL = await getDownloadURL(snapshot.ref);
 
         return downloadURL;
@@ -24,4 +23,3 @@ export class FireStorageService {
     }
 
 }
-
