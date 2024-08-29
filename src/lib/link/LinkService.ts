@@ -20,6 +20,9 @@ export class LinkService {
     }
     
     async createLink(link: CreateLinkDto) {
+        if(!link.imageUrl) {
+            delete link.imageUrl;
+        }
         const id = await this.firestoreService.addDocument(this.collectionName, link);
         
         return {

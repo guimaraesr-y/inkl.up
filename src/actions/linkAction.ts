@@ -4,7 +4,8 @@ import { CreateLinkDto, UpdateLinkDto } from '@/lib/link/interfaces';
 import { LinkService } from '@/lib/link/LinkService';
 import { getAuthenticatedUser } from './authenticationActions';
 import Unauthorized from '@/errors/Unauthorized';
-import { uploadFile } from './storageAction';
+import { deleteFile, uploadFile } from './storageAction';
+import AppError from '@/errors/AppError';
 
 const linkService = new LinkService();
 
@@ -18,17 +19,22 @@ export const getLinkById = async (id: string) => {
 
 export const createLink = async (link: FormData) => {
     const user = await getAuthenticatedUser();
-
-    const url = link.get('url') as string;
-    const title = link.get('title') as string;
-    const image = link.get('image') as File;
     const userId = link.get('userId') as string;
 
     if(user?.id !== userId) {
         throw new Unauthorized();
     }
 
-    const imageUrl = await uploadFile(image);
+    const url = link.get('url') as string;
+    const title = link.get('title') as string;
+    const image = link.get('image') as File;
+
+    // validate if file is an image
+    if (image && !image.type.startsWith('image/')) {
+        throw new AppError('O arquivo deve ser uma imagem.', 400);
+    }
+
+    const imageUrl = image ? await uploadFile(image) : undefined;
     
     const newLink = await linkService.createLink({
         userId,
@@ -61,6 +67,9 @@ export const deleteLink = async (id: string) => {
     if(user?.id !== link?.userId) {
         throw new Unauthorized();
     }
+
+    // delete associated image
+    deleteFile(link.imageUrl);
 
     await linkService.deleteLink(id);
 }

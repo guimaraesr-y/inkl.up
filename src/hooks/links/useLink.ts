@@ -3,6 +3,7 @@ import Link from "@/lib/link/Link";
 import * as linkAction from "@/actions/linkAction";
 import { useState, useCallback } from "react";
 import { UpdateLinkDto } from "@/lib/link/interfaces";
+import AppError from "@/errors/AppError";
 
 export function useLink() {
     const [loading, setLoading] = useState(false);
@@ -16,10 +17,14 @@ export function useLink() {
             const linkId = await linkAction.createLink(formData);
             setLoading(false);
             return linkId;
-        } catch (e) {
-            setError("Failed to create link");
-            setLoading(false);
-            throw e;
+        } catch (e: any) {
+            if(e instanceof AppError) {
+                setError(e.message);
+                setLoading(false);
+            } else {
+                setError("Erro inesperado ao criar link.");
+                setLoading(false);
+            }
         }
     }, [setLoading, setError]);
 

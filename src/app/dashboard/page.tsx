@@ -19,8 +19,17 @@ import { FaPlus, FaGhost } from "react-icons/fa6";
 const Dashboard = () => {
     const [links, setLinks] = useState<Link[]>([]);
     const [openCreateLink, setOpenCreateLink] = useState(false);
-    const { user, loading: authLoading } = useAuthentication();
-    const { getLinks, createLink, deleteLink, updateLink, loading: linkLoading } = useLink();
+    const [isErrorOpen, setIsErrorOpen] = useState(false);
+
+    const { user } = useAuthentication();
+    const { 
+        getLinks, 
+        createLink, 
+        deleteLink, 
+        updateLink, 
+        loading: linkLoading, 
+        error: linkError 
+    } = useLink();
 
     // load links from database
     useEffect(() => {
@@ -32,15 +41,21 @@ const Dashboard = () => {
     }, [user, getLinks]);
 
     const formFields: Field[] = [
-        { id: 'title', label: 'Título', type: 'text', placeholder: 'Digite o título do link' },
-        { id: 'url', label: 'URL', type: 'text', placeholder: 'https://www.exemplo.com' },
-        { id: 'image', label: 'Imagem', type: 'file', placeholder: '' },
+        { id: 'title', label: 'Título', type: 'text', placeholder: 'Digite o título do link', required: true },
+        { id: 'url', label: 'URL', type: 'text', placeholder: 'https://www.exemplo.com', required: true },
+        { id: 'image', label: 'Imagem', type: 'file', placeholder: '', accept: 'image/*' },
     ];
 
     const handleCreateLink = async (data: FormData) => {
         data.set('userId', user?.id!);
 
         const link = await createLink(data);
+
+        if (!link) {
+            setOpenCreateLink(false);
+            setIsErrorOpen(true);
+            return;
+        }
 
         setLinks([...links, link]);
         setOpenCreateLink(false);
@@ -70,6 +85,11 @@ const Dashboard = () => {
 
     return (
         <>
+
+            <Modal title={"Ocorreu um erro!"} isOpen={isErrorOpen} onClose={() => setIsErrorOpen(false)}>
+                <p>{linkError}</p>
+            </Modal>
+
             <NavbarWrapper>
                 <Container>
                     <div className="flex flex-col items-center gap-2">

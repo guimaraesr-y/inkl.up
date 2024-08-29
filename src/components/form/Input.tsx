@@ -7,11 +7,24 @@ export interface FormInputProps {
     placeholder?: string;
     value: string | boolean | File;
     disabled?: boolean;
+    required?: boolean;
+    accept?: string;
     onChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
     options?: { value: string; label: string }[];
 }
 
-const Input = ({ label, id, type = 'text', placeholder, value, disabled = false, onChange, options }: FormInputProps) => {
+const Input = ({ 
+    label, 
+    id, 
+    type = 'text', 
+    placeholder, 
+    value, 
+    disabled = false, 
+    required = false, 
+    accept = "*", 
+    onChange, 
+    options 
+}: FormInputProps) => {
     if (type === 'checkbox') {
         return (
             <div className="mb-6 flex items-center">
@@ -21,6 +34,7 @@ const Input = ({ label, id, type = 'text', placeholder, value, disabled = false,
                     checked={value as boolean}
                     onChange={onChange}
                     disabled={disabled}
+                    required={required}
                     className="mr-2"
                 />
                 <label htmlFor={id} className="text-subtitle">
@@ -41,6 +55,7 @@ const Input = ({ label, id, type = 'text', placeholder, value, disabled = false,
                     value={value as string}
                     onChange={onChange}
                     disabled={disabled}
+                    required={required}
                     className="w-full px-4 py-2 bg-back border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                     {options?.map((option) => (
@@ -64,6 +79,8 @@ const Input = ({ label, id, type = 'text', placeholder, value, disabled = false,
                     type="file"
                     onChange={onChange}
                     disabled={disabled}
+                    required={required}
+                    accept={accept}
                     className="w-full px-4 py-2 bg-back border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
@@ -82,6 +99,7 @@ const Input = ({ label, id, type = 'text', placeholder, value, disabled = false,
                 value={value as string}
                 onChange={onChange}
                 disabled={disabled}
+                required={required}
                 className="w-full px-4 py-2 bg-back border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
         </div>

@@ -35,8 +35,6 @@ const Form = ({ fields, buttonText, title, onSubmit }: FormProps): React.ReactEl
             ...formData,
             [id]: type === 'checkbox' ? checked : value,
         });
-
-        console.log()
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
