@@ -72,12 +72,12 @@ const Dashboard = () => {
         })
     };
 
-    const handleUpdateLink = (link: UpdateLinkDto): Promise<void> => {
+    const handleUpdateLink = (formData: FormData): Promise<Link> => {
         return new Promise((resolve, reject) => {
-            updateLink(link)
-                .then(res => {
+            updateLink(formData)
+                .then(link => {
                     setLinks(links.map(l => l.id === link.id ? { ...l, ...link } : l));
-                    resolve(res);
+                    resolve(link);
                 })
                 .catch(reject)
         })
@@ -85,7 +85,6 @@ const Dashboard = () => {
 
     return (
         <>
-
             <Modal title={"Ocorreu um erro!"} isOpen={isErrorOpen} onClose={() => setIsErrorOpen(false)}>
                 <p>{linkError}</p>
             </Modal>
@@ -142,9 +141,7 @@ const Dashboard = () => {
                                 <UserLink
                                     key={link.id}
                                     id={link.id}
-                                    href={link.url}
-                                    title={link.title}
-                                    imageUrl={link.imageUrl}
+                                    link={link}
                                     editMode={true}
                                     onDelete={handleDeleteLink}
                                     onUpdate={handleUpdateLink}

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input, { FormInputProps } from './Input';
 
-export type Field = Omit<FormInputProps, 'value' | 'onChange'>;
+export interface Field extends Omit<FormInputProps, 'value' | 'onChange'> {
+    value?: string | boolean;
+}
 
 export type FormProps = {
     fields: Field[];
@@ -14,7 +16,7 @@ const Form = ({ fields, buttonText, title, onSubmit }: FormProps): React.ReactEl
     const [formData, setFormData] = useState(
         fields.reduce((acc, field) => ({
             ...acc,
-            [field.id]: field.type === 'checkbox' ? false : field.type === 'select' ? field.options![0].value : ''
+            [field.id]: field.type === 'checkbox' ? false : field.type === 'select' ? field.options![0].value : (field.value || '')
         }), {} as { [key: string]: string | boolean | File })
     );
 
@@ -23,7 +25,6 @@ const Form = ({ fields, buttonText, title, onSubmit }: FormProps): React.ReactEl
         const checked = 'checked' in e.target ? (e.target as HTMLInputElement).checked : false;
 
         if (type === 'file') {
-            console.log(e.target.files);
             setFormData({
                 ...formData,
                 [id]: e.target.files ? e.target.files[0] : '',

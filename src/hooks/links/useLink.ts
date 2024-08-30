@@ -58,16 +58,22 @@ export function useLink() {
         }
     }, [setLoading, setError]);
 
-    const updateLink = useCallback(async (link: UpdateLinkDto) => {
+    const updateLink = useCallback(async (formData: FormData): Promise<Link> => {
         setLoading(true);
         setError(null);
         
         try {
-            await linkAction.updateLink(link);
+            const link = await linkAction.updateLink(formData);
             setLoading(false);
-        } catch (e) {
-            setError("Failed to update link");
-            setLoading(false);
+            return link;
+        } catch (e: any) {
+            if(e instanceof AppError) {
+                setError(e.message);
+                setLoading(false);
+            } else {
+                setError("Erro inesperado ao criar link.");
+                setLoading(false);
+            }
             throw e;
         }
     }, [setLoading, setError]);

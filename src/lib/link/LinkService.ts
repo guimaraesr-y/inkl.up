@@ -36,6 +36,10 @@ export class LinkService {
             throw new Error("Link id is required");
         }
 
+        if(!link.imageUrl) {
+            delete link.imageUrl;
+        }
+
         return this.firestoreService.updateDocument(this.collectionName, link.id, link);
     }
 
