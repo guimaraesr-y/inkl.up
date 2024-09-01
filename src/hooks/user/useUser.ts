@@ -11,6 +11,8 @@ export function useUser() {
     const createUser = useCallback(async (user: User) => {
         setLoading(true);
         setError(null);
+
+        user.username = user.email?.split("@")[0].toLowerCase() || user.id;
         
         try {
             const userId = await userActions.createUser(user);

@@ -9,10 +9,11 @@ import UserLink from "@/components/userLink/UserLink";
 import WideButton from "@/components/wideButton/WideButton";
 import { useLink } from "@/hooks/links/useLink";
 import { useAuthentication } from "@/hooks/user/useAuthentication";
-import { UpdateLinkDto } from "@/lib/link/interfaces";
+import { useUser } from "@/hooks/user/useUser";
 import Link from "@/lib/link/Link";
-import { useEffect, useState } from "react";
-import { FaPlus, FaGhost } from "react-icons/fa6";
+import { useEffect, useRef, useState } from "react";
+import { FaSave } from "react-icons/fa";
+import { FaPlus, FaGhost, FaPencil } from "react-icons/fa6";
 
 
 // TODO: this is where user configures their links
@@ -20,8 +21,16 @@ const Dashboard = () => {
     const [links, setLinks] = useState<Link[]>([]);
     const [openCreateLink, setOpenCreateLink] = useState(false);
     const [isErrorOpen, setIsErrorOpen] = useState(false);
+    const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
+
+    const usernameRef = useRef<HTMLElement>(null);
 
     const { user } = useAuthentication();
+
+    const {
+        updateUser,
+    } = useUser();
+
     const { 
         getLinks, 
         createLink, 
@@ -40,11 +49,31 @@ const Dashboard = () => {
         })()
     }, [user, getLinks]);
 
+    // Focus on the username input when editing and select all text
+    useEffect(() => {
+        if (isUpdatingUsername && usernameRef.current) {
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(usernameRef.current);
+            selection?.removeAllRanges();
+            selection?.addRange(range);
+            usernameRef.current.focus();
+        }
+    }, [isUpdatingUsername]);
+
     const formFields: Field[] = [
         { id: 'title', label: 'Título', type: 'text', placeholder: 'Digite o título do link', required: true },
         { id: 'url', label: 'URL', type: 'text', placeholder: 'https://www.exemplo.com', required: true },
         { id: 'image', label: 'Imagem', type: 'file', placeholder: '', accept: 'image/*' },
     ];
+
+    // Handle Enter key press in contentEditable
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLParagraphElement>) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleUpdateUsername();
+        }
+    };
 
     const handleCreateLink = async (data: FormData) => {
         data.set('userId', user?.id!);
@@ -83,6 +112,14 @@ const Dashboard = () => {
         })
     };
 
+    const handleUpdateUsername = () => {
+        updateUser({ 
+            id: user?.id!,
+            username: usernameRef.current?.textContent || '',
+        });
+        setIsUpdatingUsername(false);
+    }
+
     return (
         <>
             <Modal title={"Ocorreu um erro!"} isOpen={isErrorOpen} onClose={() => setIsErrorOpen(false)}>
@@ -97,8 +134,36 @@ const Dashboard = () => {
                             width={100}
                         />
 
-                        <div className="font-bold text-xl tracking-wide">
+                        <div className="font-bold text-xl tracking-wide text-center">
                             <h1>{user?.name}</h1>
+
+                            {user?.username && (
+                                <div className="flex items-center justify-center gap-2 text-subtitle font-normal">
+                                    <div>
+                                        @<small 
+                                            ref={usernameRef}
+                                            contentEditable={isUpdatingUsername} 
+                                            suppressContentEditableWarning
+                                            onKeyDown={handleKeyDown}
+                                        >
+                                            {user.username}
+                                        </small>
+                                    </div>
+                                    <div className="">
+                                        {isUpdatingUsername ? 
+                                            <FaSave 
+                                                onClick={() => handleUpdateUsername()} 
+                                                fontSize={14} 
+                                                className="hover:text-text cursor-pointer" 
+                                            /> : 
+                                            <FaPencil 
+                                                onClick={() => setIsUpdatingUsername(true)} 
+                                                fontSize={14} 
+                                                className="hover:text-text cursor-pointer" 
+                                            />}
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
