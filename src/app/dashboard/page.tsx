@@ -12,8 +12,9 @@ import { useAuthentication } from "@/hooks/user/useAuthentication";
 import { useUser } from "@/hooks/user/useUser";
 import Link from "@/lib/link/Link";
 import { useEffect, useRef, useState } from "react";
+import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 import { FaSave } from "react-icons/fa";
-import { FaPlus, FaGhost, FaPencil } from "react-icons/fa6";
+import { FaPlus, FaGhost, FaPencil, FaBars } from "react-icons/fa6";
 
 
 // TODO: this is where user configures their links
@@ -31,13 +32,13 @@ const Dashboard = () => {
         updateUser,
     } = useUser();
 
-    const { 
-        getLinks, 
-        createLink, 
-        deleteLink, 
-        updateLink, 
-        loading: linkLoading, 
-        error: linkError 
+    const {
+        getLinks,
+        createLink,
+        deleteLink,
+        updateLink,
+        loading: linkLoading,
+        error: linkError
     } = useLink();
 
     // load links from database
@@ -113,11 +114,16 @@ const Dashboard = () => {
     };
 
     const handleUpdateUsername = () => {
-        updateUser({ 
+        updateUser({
             id: user?.id!,
             username: usernameRef.current?.textContent || '',
         });
         setIsUpdatingUsername(false);
+    }
+
+    const onSortEnd = (oldIndex: number, newIndex: number) => {
+        // setLinks((array) => arrayMoveImmutable(array, oldIndex, newIndex))
+        // TODO: implement link reordering in database with "nextLinkId"
     }
 
     return (
@@ -140,9 +146,9 @@ const Dashboard = () => {
                             {user?.username && (
                                 <div className="flex items-center justify-center gap-2 text-subtitle font-normal">
                                     <div>
-                                        @<small 
+                                        @<small
                                             ref={usernameRef}
-                                            contentEditable={isUpdatingUsername} 
+                                            contentEditable={isUpdatingUsername}
                                             suppressContentEditableWarning
                                             onKeyDown={handleKeyDown}
                                         >
@@ -150,16 +156,16 @@ const Dashboard = () => {
                                         </small>
                                     </div>
                                     <div className="">
-                                        {isUpdatingUsername ? 
-                                            <FaSave 
-                                                onClick={() => handleUpdateUsername()} 
-                                                fontSize={14} 
-                                                className="hover:text-text cursor-pointer" 
-                                            /> : 
-                                            <FaPencil 
-                                                onClick={() => setIsUpdatingUsername(true)} 
-                                                fontSize={14} 
-                                                className="hover:text-text cursor-pointer" 
+                                        {isUpdatingUsername ?
+                                            <FaSave
+                                                onClick={() => handleUpdateUsername()}
+                                                fontSize={14}
+                                                className="hover:text-text cursor-pointer"
+                                            /> :
+                                            <FaPencil
+                                                onClick={() => setIsUpdatingUsername(true)}
+                                                fontSize={14}
+                                                className="hover:text-text cursor-pointer"
                                             />}
                                     </div>
                                 </div>
@@ -201,18 +207,33 @@ const Dashboard = () => {
                             <div className="border-t border-border flex-grow"></div>
                         </div>
 
-                        <div className="mt-6 w-full flex flex-col gap-4">
-                            {links.reverse().map((link) => (
-                                <UserLink
-                                    key={link.id}
-                                    id={link.id}
-                                    link={link}
-                                    editMode={true}
-                                    onDelete={handleDeleteLink}
-                                    onUpdate={handleUpdateLink}
-                                    loading={linkLoading}
-                                />
-                            ))}
+                        <div>
+                            {/* Drag and drop to reorder links */}
+                            <SortableList onSortEnd={onSortEnd} className="mt-6 w-full flex flex-col gap-4" draggedItemClassName="dragged">
+                                {links.reverse().map((link) => (
+                                    <SortableItem key={link.id}>
+                                        <div className="relative group">
+
+                                            <SortableKnob>
+                                                <div className="group absolute top-1/2 -translate-y-1/2 left-4 z-10">
+                                                    <FaBars className="group-hover:fill-text cursor-move fill-border" fontSize={24} />
+                                                </div>
+                                            </SortableKnob>
+
+                                            {/* Link card */}
+                                            <UserLink
+                                                id={link.id}
+                                                link={link}
+                                                editMode={true}
+                                                onDelete={handleDeleteLink}
+                                                onUpdate={handleUpdateLink}
+                                                loading={linkLoading}
+                                            />
+
+                                        </div>
+                                    </SortableItem>
+                                ))}
+                            </SortableList>
 
                             {links.length === 0 && (
                                 <div className="flex flex-col items-center justify-center">

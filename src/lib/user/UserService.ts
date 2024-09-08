@@ -19,6 +19,10 @@ export class UserService {
         return await this.firestoreService.getDocument(this.collectionName, id) as User | null;
     }
 
+    public async getUserByUsername(username: string): Promise<User | null> {
+        return (await this.firestoreService.getDocumentsByField(this.collectionName, "username", username))[0] as User | null;
+    }
+
     public async createUser(user: CreateUserDto): Promise<string> {
         return await this.firestoreService.setDocument(this.collectionName, user.id, user);
     }

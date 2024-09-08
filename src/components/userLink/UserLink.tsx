@@ -73,24 +73,10 @@ const UserLink = ({
 
     return (
         <>
-            {/* Error modal */}
-            <Modal title={"Ocorreu um erro!"} isOpen={Boolean(errorMessage)} onClose={() => setErrorMessage('')}>
-                <p>{errorMessage}</p>
-            </Modal>
-
-            {/* Update Link modal */}
-            <Modal isOpen={openEditModal} onClose={() => setOpenEditModal(false)} title="Atualizar link">
-                <Form
-                    fields={formFields}
-                    onSubmit={formData => handleUpdate(formData)}
-                    buttonText="Atualizar"
-                ></Form>
-            </Modal>
-
             <Link 
-                href={editMode ? "#" : link.url} 
+                href={(editMode && isMobile) ? "#" : link.url} 
                 className="group w-full flex flex-col items-center gap-2 p-4 border border-border rounded-lg hover:bg-primary"
-                onClick={() => isMobile ? setOpenEditModal(true) : null} 
+                onClick={() => (isMobile && editMode) ? setOpenEditModal(true) : null} 
             >
                 {/* Image div */}
                 {link.imageUrl !== undefined && (
@@ -118,6 +104,21 @@ const UserLink = ({
                 </div>
             </Link>
 
+            {/* Error modal */}
+            <Modal title={"Ocorreu um erro!"} isOpen={Boolean(errorMessage)} onClose={() => setErrorMessage('')}>
+                <p>{errorMessage}</p>
+            </Modal>
+
+            {/* Update Link modal */}
+            <Modal isOpen={openEditModal} onClose={() => setOpenEditModal(false)} title="Atualizar link">
+                <Form
+                    fields={formFields}
+                    onSubmit={formData => handleUpdate(formData)}
+                    buttonText="Atualizar"
+                ></Form>
+            </Modal>
+
+            {/* Delete Link modal */}
             {openDeleteModal && (
                 <Modal
                     isOpen={openDeleteModal}
