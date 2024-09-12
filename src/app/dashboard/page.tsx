@@ -13,6 +13,7 @@ import { useUser } from "@/hooks/user/useUser";
 import Link from "@/lib/link/Link";
 import { useEffect, useRef, useState } from "react";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
+import arrayMoveImmutable from "array-move";
 import { FaSave } from "react-icons/fa";
 import { FaPlus, FaGhost, FaPencil, FaBars } from "react-icons/fa6";
 
@@ -37,6 +38,7 @@ const Dashboard = () => {
         createLink,
         deleteLink,
         updateLink,
+        moveLink,
         loading: linkLoading,
         error: linkError
     } = useLink();
@@ -121,9 +123,10 @@ const Dashboard = () => {
         setIsUpdatingUsername(false);
     }
 
-    const onSortEnd = (oldIndex: number, newIndex: number) => {
-        // setLinks((array) => arrayMoveImmutable(array, oldIndex, newIndex))
-        // TODO: implement link reordering in database with "nextLinkId"
+    const onSortEnd = async (oldIndex: number, newIndex: number) => {
+        const arr = arrayMoveImmutable(links, oldIndex, newIndex);
+        setLinks(arr);
+        await moveLink(links, oldIndex, newIndex);
     }
 
     return (

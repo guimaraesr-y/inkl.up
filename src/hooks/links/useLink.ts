@@ -78,6 +78,16 @@ export function useLink() {
         }
     }, [setLoading, setError]);
 
+    const updateLinkByModel = useCallback(async (link: UpdateLinkDto) => {
+        const formData = new FormData();
+
+        for (const [key, value] of Object.entries(link)) {
+            formData.append(key, value);
+        }
+
+        return updateLink(formData);
+    }, [updateLink])
+
     const deleteLink = useCallback(async (linkId: string) => {
         setLoading(true);
         setError(null);
@@ -92,15 +102,19 @@ export function useLink() {
         }
     }, [setLoading, setError]);
 
+    const moveLink = useCallback(async (links: Link[], oldIndex: number, newIndex: number) => {
+        return linkAction.moveLink(links, oldIndex, newIndex);
+    }, []);
+
     return { 
         createLink, 
         getLinks, 
         getLinkById,
         updateLink, 
+        updateLinkByModel,
         deleteLink,
+        moveLink,
         loading, 
         error 
     };
 }
-
-

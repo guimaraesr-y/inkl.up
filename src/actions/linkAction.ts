@@ -13,7 +13,7 @@ const linkService = new LinkService();
 const storageService = new HandleStorageService();
 
 export const getLinks = async (linkId: string) => {
-    return await linkService.getLinks(linkId);
+    return linkService.orderLinks(await linkService.getLinks(linkId));
 };
 
 export const getLinkById = async (id: string) => {
@@ -58,6 +58,7 @@ export const updateLink = async (link: FormData) => {
     }
 
     const id = link.get('id') as string;
+    const nextLinkId = link.get('nextLinkId') as string;
     const url = link.get('url') as string;
     const title = link.get('title') as string;
     const image = link.get('image') as File;
@@ -86,6 +87,7 @@ export const updateLink = async (link: FormData) => {
     const newLink: UpdateLinkDto = {
         id,
         userId,
+        nextLinkId,
         url,
         title,
         imageUrl,
@@ -111,4 +113,8 @@ export const deleteLink = async (id: string) => {
     deleteFile(link.imageUrl);
 
     await linkService.deleteLink(id);
+}
+
+export const moveLink = async (links: Link[], oldIndex: number, newIndex: number) => {
+    return linkService.moveLink(links, oldIndex, newIndex);
 }
