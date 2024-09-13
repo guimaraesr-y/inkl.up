@@ -3,7 +3,7 @@ import { FaPlus, FaBrush, FaRulerCombined } from "react-icons/fa6";
 
 export default function AppBar() {
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white shadow-lg z-50">
+        <div className="px-8 fixed bottom-0 left-0 right-0 bg-gray-800 text-white shadow-lg z-50">
             <div className="flex justify-between items-center p-4">
                 <Link href="/dashboard/styles" className="flex flex-col items-center justify-center">
                     <FaBrush className="h-6 w-6 mb-1" />

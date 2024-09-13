@@ -1,4 +1,3 @@
-// hooks/useUser.ts
 import Link from "@/lib/link/Link";
 import * as linkAction from "@/actions/linkAction";
 import { useState, useCallback } from "react";

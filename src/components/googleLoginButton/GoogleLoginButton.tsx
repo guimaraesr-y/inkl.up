@@ -6,7 +6,6 @@ import { app } from "@/lib/infra/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useUser } from "@/hooks/user/useUser";
 import { FaGoogle } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
 
 export default function GoogleLoginButton() {
     const { getUser, createUser } = useUser();

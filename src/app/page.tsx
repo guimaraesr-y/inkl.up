@@ -1,8 +1,6 @@
 import GoogleLoginButton from '@/components/googleLoginButton/GoogleLoginButton';
 import Logo from '@/components/logo/logo';
 import Head from 'next/head';
-import Link from 'next/link';
-import { FaGoogle } from 'react-icons/fa6';
 
 export default function Home() {
     return (
