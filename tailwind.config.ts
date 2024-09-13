@@ -16,7 +16,7 @@ const config: Config = {
         'secondary': "#1A2B3C",
         'border': "#2C3E50",
         'error': "#D16BA5",
-      }      
+      },
     },
   },
   plugins: [],

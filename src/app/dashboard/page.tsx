@@ -189,6 +189,7 @@ const Dashboard = () => {
                                 text="Criar Link"
                                 icon={<FaPlus />}
                                 onClick={() => setOpenCreateLink(true)}
+                                className="bg-secondary border border-border"
                             />
                             <Modal
                                 isOpen={openCreateLink} onClose={() =>
@@ -215,7 +216,7 @@ const Dashboard = () => {
                             <SortableList onSortEnd={onSortEnd} className="mt-6 w-full flex flex-col gap-4" draggedItemClassName="dragged">
                                 {links.reverse().map((link) => (
                                     <SortableItem key={link.id}>
-                                        <div className="relative group">
+                                        <div className="relative group bg-secondary rounded-lg">
 
                                             <SortableKnob>
                                                 <div className="group absolute top-1/2 -translate-y-1/2 left-4 z-10">

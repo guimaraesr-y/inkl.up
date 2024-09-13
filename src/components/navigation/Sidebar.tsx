@@ -17,7 +17,7 @@ export default function Sidebar() {
     }
 
     return (
-        <div className="h-screen w-64 bg-gray-800 text-white flex flex-col justify-between shadow-lg">
+        <div className="h-screen w-64 bg-gray-800/60 backdrop-blur-md text-white flex flex-col justify-between shadow-lg">
             <div className="flex flex-col">
                 <div className="p-6 text-2xl font-bold tracking-wide text-center border-b border-gray-700">
                     Inkl.Up
