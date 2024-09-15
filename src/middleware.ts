@@ -15,6 +15,10 @@ export async function middleware(request: NextRequest) {
         serviceAccount: serverConfig.serviceAccount,
         
         handleValidToken: async ({ token, decodedToken }, headers) => {
+            if(request.nextUrl.pathname == '/') {
+                return NextResponse.redirect('/dashboard');
+            }
+
             return NextResponse.next({
                 request: {
                     headers
