@@ -10,12 +10,13 @@ import WideButton from "@/components/wideButton/WideButton";
 import { useLink } from "@/hooks/links/useLink";
 import { useAuthentication } from "@/hooks/user/useAuthentication";
 import { useUser } from "@/hooks/user/useUser";
-import Link from "@/lib/link/Link";
 import { useEffect, useRef, useState } from "react";
 import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
 import arrayMoveImmutable from "array-move";
 import { FaSave } from "react-icons/fa";
-import { FaPlus, FaGhost, FaPencil, FaBars } from "react-icons/fa6";
+import { FaPlus, FaGhost, FaPencil, FaBars, FaUpRightFromSquare } from "react-icons/fa6";
+import NextLink from "next/link";
+import Link from "@/lib/link/Link";
 
 
 // TODO: this is where user configures their links
@@ -158,19 +159,22 @@ const Dashboard = () => {
                                             {user.username}
                                         </small>
                                     </div>
-                                    <div className="">
+                                    <div>
                                         {isUpdatingUsername ?
                                             <FaSave
                                                 onClick={() => handleUpdateUsername()}
-                                                fontSize={14}
-                                                className="hover:text-text cursor-pointer"
+                                                className="text-[20px] md:text-[14px] hover:text-text cursor-pointer"
                                             /> :
                                             <FaPencil
                                                 onClick={() => setIsUpdatingUsername(true)}
-                                                fontSize={14}
-                                                className="hover:text-text cursor-pointer"
+                                                className="text-[20px] md:text-[14px] hover:text-text cursor-pointer"
                                             />}
                                     </div>
+                                    <NextLink href={`/p/${user.username}`}>
+                                        <FaUpRightFromSquare 
+                                            className="text-[20px] md:text-[14px] hover:text-text cursor-pointer"
+                                        />
+                                    </NextLink>
                                 </div>
                             )}
                         </div>

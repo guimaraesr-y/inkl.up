@@ -6,9 +6,14 @@ import { UserService } from "@/lib/user/UserService";
 import { notFound } from "next/navigation";
 import { FaGhost } from "react-icons/fa6";
 
+interface ViewLinksProps {
+    params: {
+        username: string;
+    };
+}
 
 // TODO: this is where user configures their links
-const ViewLinks = async ({ params }: { params: { username: string } }) => {
+const ViewLinks = async ({ params }: ViewLinksProps) => {
     const userService = new UserService();
     const linkService = new LinkService();
 
@@ -19,8 +24,8 @@ const ViewLinks = async ({ params }: { params: { username: string } }) => {
     const links = await linkService.getLinks(user.id);
 
     return (
-        <>
-            <Container>
+        <Container>
+            <div className="body min-h-screen">
                 <div className="flex flex-col items-center gap-2">
                     <ProfilePicture
                         profilePicture={user?.profilePicture! || '/img/avatar.svg'}
@@ -44,12 +49,6 @@ const ViewLinks = async ({ params }: { params: { username: string } }) => {
 
                 {/* Links section */}
                 <div className="mt-8">
-                    <div className="flex items-center justify-center">
-                        <div className="border-t border-border flex-grow"></div>
-                        <span className="px-4 text-subtitle">Meus Links</span>
-                        <div className="border-t border-border flex-grow"></div>
-                    </div>
-
                     <div className="mt-6 w-full flex flex-col gap-4">
                         {links.map((link) => (
                             <UserLink
@@ -68,8 +67,8 @@ const ViewLinks = async ({ params }: { params: { username: string } }) => {
                         )}
                     </div>
                 </div>
-            </Container>
-        </>
+            </div>
+        </Container>
     )
 }
 

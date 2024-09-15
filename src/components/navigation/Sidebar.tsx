@@ -33,7 +33,7 @@ export default function Sidebar() {
                     </a>
 
                     <a
-                        href="/dasboard/styles"
+                        href="/styles"
                         className="flex items-center px-4 py-2 text-lg font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"
                     >
                         <FaBrush className="w-6 h-6 mr-3" />
@@ -41,7 +41,7 @@ export default function Sidebar() {
                     </a>
 
                     <a
-                        href="/dasboard/metrics"
+                        href="/metrics"
                         className="flex items-center px-4 py-2 text-lg font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md"
                     >
                         <FaRulerCombined className="w-6 h-6 mr-3" />
