@@ -8,11 +8,15 @@ import { useUser } from "@/hooks/user/useUser";
 import { FaGoogle } from "react-icons/fa6";
 
 export default function GoogleLoginButton() {
+    const [error, setError] = useState("");
+    const router = useRouter();
+
     const { getUser, createUser } = useUser();
+
     console.log(app.name)
     const auth = getAuth();
     auth.useDeviceLanguage();
-
+    
     const provider = new GoogleAuthProvider();
     provider.addScope('profile');
     provider.addScope('email');
@@ -20,9 +24,6 @@ export default function GoogleLoginButton() {
     provider.setCustomParameters({
         'login_hint': 'user@example.com',
     });
-
-    const [error, setError] = useState("");
-    const router = useRouter();
 
     async function authenticate() {
         setError("");
