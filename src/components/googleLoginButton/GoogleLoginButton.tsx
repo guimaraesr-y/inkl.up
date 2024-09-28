@@ -6,11 +6,13 @@ import { app } from "@/lib/infra/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useUser } from "@/hooks/user/useUser";
 import { FaGoogle } from "react-icons/fa6";
+import { useAuthentication } from "@/hooks/user/useAuthentication";
 
 export default function GoogleLoginButton() {
     const [error, setError] = useState("");
     const router = useRouter();
 
+    const { user } = useAuthentication();
     const { getUser, createUser } = useUser();
 
     console.log(app.name)
@@ -27,6 +29,11 @@ export default function GoogleLoginButton() {
 
     async function authenticate() {
         setError("");
+
+        if(user) {
+            router.push("/dashboard");
+            return;
+        }
 
         try {
             const result = await signInWithPopup(auth, provider);
